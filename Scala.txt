@@ -1,0 +1,38 @@
+// Brendon Kupsch
+// Scala Caesar Cipher
+
+object CaesarCipher {
+  private val upperAlphabet = 'A' to 'Z'
+  private val lowerAlphabet = 'a' to 'z'
+
+  def main(args: Array[String]): Unit = {
+    val originalText = "HAL"
+    println(s"Original => $originalText")
+
+    val encryptedText = encrypt(originalText, 10)
+    println(s"Encrypt: $originalText => $encryptedText")
+
+    val decryptedText = decrypt(encryptedText, 10)
+    println(s"Decrypted: $originalText => $decryptedText")
+
+    solve(originalText)
+  }
+
+  def encrypt(text: String, key: Int): String = text.map {
+    case char if upperAlphabet.contains(char) => rotate(upperAlphabet, char, key)
+    case char if lowerAlphabet.contains(char) => rotate(lowerAlphabet, char, key)
+    case char => char
+  }
+
+  def decrypt(text: String, key: Int): String = encrypt(text, -key)
+
+  private def rotate(alphabet: IndexedSeq[Char], char: Char, key: Int): Char =
+    alphabet((char - alphabet.head + key + alphabet.size) % alphabet.size)
+
+  def solve(text: String): Unit = {
+    for (i <- 0 to 26) {
+      val encoded = encrypt(text, i)
+      println(s"Key $i => $encoded")
+    }
+  }
+}

@@ -1,0 +1,63 @@
+' Brendon Kupsch
+' BASIC Caesar Cipher
+
+Function Encrypt(text As String, shift As Integer) As String
+  Dim i As Integer
+  Dim result As String
+
+  result = text
+
+  For i = 1 To Len(text)
+    If Asc(Mid(text, i, 1)) >= 65 And Asc(Mid(text, i, 1)) <= 90 Then ' Check for uppercase letters
+      result = Mid(result, 1, i - 1) & Chr((Asc(Mid(text, i, 1)) - 65 + shift) Mod 26 + 65) & Mid(result, i + 1)
+    ElseIf Asc(Mid(text, i, 1)) >= 97 And Asc(Mid(text, i, 1)) <= 122 Then ' Check for lowercase letters
+      result = Mid(result, 1, i - 1) & Chr((Asc(Mid(text, i, 1)) - 97 + shift) Mod 26 + 97) & Mid(result, i + 1)
+    End If
+  Next i
+
+  Encrypt = result
+End Function
+
+Function Decrypt(text As String, shift As Integer) As String
+  Dim i As Integer
+  Dim result As String
+
+  result = text
+
+  For i = 1 To Len(text)
+    If Asc(Mid(text, i, 1)) >= 65 And Asc(Mid(text, i, 1)) <= 90 Then ' Check for uppercase letters
+      result = Mid(result, 1, i - 1) & Chr((Asc(Mid(text, i, 1)) - 65 - shift) Mod 26 + 65) & Mid(result, i + 1)
+    ElseIf Asc(Mid(text, i, 1)) >= 97 And Asc(Mid(text, i, 1)) <= 122 Then ' Check for lowercase letters
+      result = Mid(result, 1, i - 1) & Chr((Asc(Mid(text, i, 1)) - 97 - shift) Mod 26 + 97) & Mid(result, i + 1)
+    End If
+  Next i
+
+  Decrypt = result
+End Function
+
+Function Solve(text As String) As String
+  Dim i As Integer
+  Dim shift As Integer
+  Dim result As String
+
+  For shift = 1 To 25
+    result = Decrypt(text, shift)
+    PRINT "Shift: " & shift & ", Decrypted message: " & result
+  Next shift
+End Function
+
+Dim message As String = "HAL"
+Dim key As Integer = 1
+Dim encrypted_message As String ' Declare encrypted_message variable
+Dim decrypted_message As String ' Declare decrypted_message variable
+Dim solved_message As String ' Declare solved_message variable
+
+Dim cipher_text As String = "IFMMP"
+solved_message = Solve(cipher_text)
+encrypted_message = Encrypt(message, key)
+decrypted_message = Decrypt(encrypted_message, key)
+
+PRINT "Original message: " & message
+PRINT "Encrypted message: " & encrypted_message
+PRINT "Decrypted message: " & decrypted_message
+PRINT "Solved message: " & solved_message
